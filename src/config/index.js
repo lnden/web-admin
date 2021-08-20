@@ -6,11 +6,11 @@
  const env = import.meta.env.MODE || 'prod'
  const EnvConf = {
    dev: {
-     baseURL: '/',
+     baseURL: '/api',
      mockURL: ' http://129.28.140.33:7200/mock/611e25f5533ee55fb589008d/api'
    },
    test: {
-     baseURL: '/',
+     baseURL: '/api',
      mockURL: ' http://129.28.140.33:7200/mock/611e25f5533ee55fb589008d/api'
    },
    prod: {
@@ -21,7 +21,7 @@
  
  export default {
    env,
-   mock: true,
+   mock: false,
    namespace: 'manager',
    ...EnvConf[env]
  }
