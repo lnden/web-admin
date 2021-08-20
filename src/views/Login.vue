@@ -77,7 +77,7 @@ export default {
   width: 100vw;
   height: 100vh;
   .modal {
-    width: 300px;
+    width: 380px;
     padding: 50px;
     background-color: #fff;
     border-radius: 4px;
