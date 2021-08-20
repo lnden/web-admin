@@ -6,11 +6,10 @@
 
  export default {
    login(params) {
-     request({
+     return request({
        url: '/users/login',
        method: 'post',
-       dataL: params,
-       mock: false
+       data: params
      })
    }
  }

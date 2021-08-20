@@ -51,13 +51,14 @@
    if (options.method.toLowerCase === 'get') {
      options.params = options.data
    }
-   if (typeof options.mock != 'undefined') {
-     config.mock = options.mock
-   }
+  let isMock = config.mock;
+  if (typeof options.mock != 'undefined') {
+    isMock = options.mock;
+  }
    if (config.env === 'prod') {
      service.defaults.baseURL = config.baseURL
    } else {
-     service.defaults.baseURL = config.mock ? config.mockURL : config.baseURL
+     service.defaults.baseURL = isMock ? config.mockURL : config.baseURL
    }
    return service(options)
  }
