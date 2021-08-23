@@ -26,6 +26,7 @@
     justify-content: center;
     align-items: center;
     height: 100%;
+    background-color: #fff;
     .content {
       /* 自身定位，相对自身距底部40px */
       position: relative;

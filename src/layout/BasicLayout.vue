@@ -44,9 +44,7 @@
         </div>
       </div>
       <div class="wrapper">
-        <div class="main-page">
-            <router-view ></router-view>
-        </div>
+        <router-view ></router-view>
       </div>
     </div>
   </div>
@@ -175,10 +173,6 @@ export default {
       background-color: #eef0f3;
       padding: 20px;
       height: calc(100vh - 50px);
-      .main-page {
-        background: #fff;
-        height: 100%;
-      }
     }
     transition: margin-left .28s;
     /* 内容区域合并 */

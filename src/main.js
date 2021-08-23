@@ -17,5 +17,5 @@ app.config.globalProperties.$storeage = storage
 
 app.use(router)
 app.use(store)
-app.use(ElementPlus)
+app.use(ElementPlus, { size: 'small', zIndex: 3000 })
 app.mount('#app')

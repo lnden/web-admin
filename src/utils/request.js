@@ -6,7 +6,8 @@
  import config from '../config'
  import { ElMessage } from 'element-plus'
  import router from '../router'
- 
+ import storage from './storage'
+
  const TOKEN_INVALID = 'Token认证失败，请重新登录'
  const NETWORK_ERROR = '网络请求异常，请稍后重试'
  
@@ -20,7 +21,8 @@
  service.interceptors.request.use((req) => {
    // TO-DO
    const headers = req.headers
-   if (!headers.Authorization) headers.Authorization = 'Bearer token'
+   const { token } = storage.getItem('userInfo')
+   if (!headers.Authorization) headers.Authorization = 'Bearer ' + token
    return req
  })
  

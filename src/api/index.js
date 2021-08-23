@@ -27,5 +27,21 @@
       data: {},
       mock: true,
     })
+  },
+  getUserList(params) {
+    return request({
+      url: '/users/list',
+      method: 'get',
+      data: params,
+      mock: true,
+    })
+  },
+  getUserDel(params) {
+    return request({
+      url: '/users/delete',
+      method: 'post',
+      data: params,
+      mock: true,
+    })
   }
  }
