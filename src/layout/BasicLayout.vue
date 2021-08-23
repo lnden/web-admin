@@ -8,38 +8,25 @@
       </div>
       <!-- 导航菜单 -->
       <el-menu
-        default-active="2"
+        :default-active="defaultMenu"
         router
         background-color="#001529"
         text-color="#fff"
         :collapse="isCollapse"
         class="side-menu">
-      <el-submenu index="1">
-        <template #title>
-          <i class="el-icon-setting"></i>
-          <span>系统管理</span>
-        </template>
-        <el-menu-item index="1-1">用户管理</el-menu-item>
-        <el-menu-item index="1-2">菜单管理</el-menu-item>
-      </el-submenu>
-      <el-submenu index="2">
-        <template #title>
-          <i class="el-icon-setting"></i>
-          <span>系统审批管理管理</span>
-        </template>
-        <el-menu-item index="2-1">休假申请</el-menu-item>
-        <el-menu-item index="2-2">待我审批</el-menu-item>
-      </el-submenu>
-    </el-menu>
+          <tree-menu :userMenu="userMenu" />
+      </el-menu>
     </div>
     <div :class="['content-right', isCollapse ? 'fold' : 'unfold']">
       <div class="nav-top">
         <div class="nav-left">
           <div class="menu-fold" @click="handleToggle"><i :class="!isCollapse ? 'el-icon-s-fold' : 'el-icon-s-unfold'"></i></div>
-          <div class="bread">面包屑</div>
+          <div class="bread">
+             <bread-crumb />
+          </div>
         </div>
         <div class="user-info">
-          <el-badge :is-dot="true" class="notice" type="danger">
+          <el-badge :is-dot="noticeCount > 0" class="notice" type="danger">
             <i class=el-icon-bell></i>
           </el-badge>
           <el-dropdown @command="handleCommand">
@@ -66,16 +53,27 @@
 </template>
 
 <script>
+import TreeMenu from '@/components/TreeMenu.vue'
+import BreadCrumb from '@/components/BreadCrumb.vue'
+
 export default {
   name: 'base-layout',
+  components: {
+    TreeMenu,
+    BreadCrumb
+  },
   data() {
     return {
-      userInfo: {
-        userName: 'Tom',
-        userEmail: 'tom@gmail.com'
-      },
-      isCollapse: false
+      userInfo: this.$store.state.userInfo,
+      isCollapse: false,
+      noticeCount: 0,
+      userMenu: [],
+      defaultMenu: location.hash.slice(1)
     }
+  },
+  mounted() {
+    this.getNoticeCount()
+    this.getMenuList()
   },
   methods: {
     handleCommand(val) {
@@ -86,6 +84,22 @@ export default {
     },
     handleToggle() {
       this.isCollapse = !this.isCollapse
+    },
+    async getNoticeCount() {
+      try {
+        const count = await this.$api.noticeCount()
+        this.noticeCount = count
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    async getMenuList() {
+      try {
+        const list = await this.$api.getMenuList()
+        this.userMenu = list 
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 }
