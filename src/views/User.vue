@@ -18,13 +18,13 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSearch">查询</el-button>
-          <el-button @click="handleReset">重置</el-button>
+          <el-button @click="handleReset('form')">重置</el-button>
         </el-form-item>
       </el-form>
     </div>
     <div class="base-table">
       <div class="action">
-        <el-button type="primary">新增</el-button>
+        <el-button type="primary" @click="handleCreate">新增</el-button>
         <el-button type="danger" @click="handlePatchDel">批量删除</el-button>
       </div>
       <el-table
@@ -42,7 +42,7 @@
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-              <el-button @click="handleEdit" type="primary" size="mini">编辑</el-button>
+              <el-button @click="handleEdit(scope.row)" type="primary" size="mini">编辑</el-button>
               <el-button @click="handleDel(scope.row)" type="danger" size="mini">删除</el-button>
           </template>
         </el-table-column>
@@ -55,25 +55,107 @@
         :page-size="pager.pageSize"
         :total="pager.total" />
     </div>
+    <el-dialog title="用户新增" v-model="showModal">
+      <el-form ref="dialogForm" :model="userForm"  label-width="100px" :rules="rules">
+        <el-form-item label="用户名" prop="userName">
+          <el-input v-model="userForm.userName" :disabled="action == 'edit'" placeholder="请输入用户名称"/>
+        </el-form-item>
+        <el-form-item label="邮箱" prop="userEmail">
+          <el-input v-model="userForm.userEmail" :disabled="action == 'edit'" placeholder="请输入用户邮箱">
+            <template #append>@admin.com</template>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="手机号" prop="mobile">
+          <el-input v-model="userForm.mobile" placeholder="请输入用户手机号"/>
+        </el-form-item>
+        <el-form-item label="岗位" prop="job">
+          <el-input v-model="userForm.job" placeholder="请输入用户岗位"/>
+        </el-form-item>
+        <el-form-item label="状态" prop="state">
+          <el-select v-model="userForm.state"  placeholder="请选择用户状态">
+            <el-option :value="1" label="在职"></el-option>
+            <el-option :value="2" label="离职"></el-option>
+            <el-option :value="3" label="试用期"></el-option>
+          </el-select> 
+        </el-form-item>
+        <el-form-item label="系统角色" prop="roleList">
+          <el-select v-model="userForm.roleList" multiple style="width:100%" placeholder="请选择用户系统角色">
+            <el-option 
+              v-for="role in roleList" 
+              :key="role._id" 
+              :label="role.roleName" 
+              :value="role._id"></el-option>
+          </el-select> 
+        </el-form-item>
+        <el-form-item label="所属部门" prop="deptId">
+           <el-cascader
+            v-model="userForm.deptId"
+            placeholder="请选择所属部门"
+            :options="deptList"
+            :props="{ checkStrictly: true, value: '_id', label: 'deptName' }"
+            style="width:100%" 
+            clearable>
+           </el-cascader>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="handleCancel">取消</el-button>
+          <el-button type="primary" @click="handleSubmit">确定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getCurrentInstance, defineComponent, onMounted, reactive, ref } from 'vue'
+import { getCurrentInstance, defineComponent, onMounted, reactive, ref, toRaw } from 'vue'
 export default defineComponent({
   name: 'user',
   setup() {
     // 获取 composition Api 上下文对象
     const { $api, $message } = getCurrentInstance().appContext.config.globalProperties
     const { ctx } = getCurrentInstance()
-
     // 初始化用户表单对象
     const user = reactive({
       userId: '',
       userName: '',
       state: 0
     })
-    
+
+    // 新增用户对象
+    const userForm = reactive({
+      userName: '',
+      userEmail: '',
+      mobile: '',
+      job: '',
+      state: 3,
+      roleList: '',
+      deptId: ''
+    })
+
+    // 定义表单校验规则
+    const rules = reactive({
+      userName: [
+        { required: true, message: '请输入用户名称', trigger: 'blur' },
+      ],
+      userEmail: [
+        { required: true, message: '请输入用户邮箱', trigger: 'blur' },
+      ],
+      mobile: [
+        { pattern: /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/, message: '请输入正确的手机号格式', trigger: 'blur' }
+      ],
+      deptId: [
+        { required: true, message: '请选择当前部门', trigger: 'change' },
+      ]
+    })
+
+    // 所有的角色列表
+    const roleList = ref([])
+
+    // 部门列表
+    const deptList = ref([])
+
     // 初始化用户列表数据
     const userList = ref([])
 
@@ -132,10 +214,30 @@ export default defineComponent({
     // 选中用户列表的对象
     const checkeduserIds = ref([])
 
+    // 弹框显示对象
+    const showModal = ref(false)
+
     // 初始化接口调用
     onMounted(() => {
       getUserList()
+      getRoleList()
+      getDeptList()
     })
+    
+    // 获取部门列表
+    const getDeptList = async () => {
+      const list = await $api.getDeptList()
+      deptList.value = list
+    }
+
+    // 定义用户操作的行为
+    const action = ref('create')
+
+    // 获取角色列表
+    const getRoleList = async () => {
+      const list = await $api.getRoleList()
+      roleList.value = list
+    }
 
     // 获取用户列表
     const getUserList = async () => {
@@ -154,13 +256,19 @@ export default defineComponent({
       getUserList()
     }
     // 重置方法
-    const handleReset = () => {
-      ctx.$refs.form.resetFields()
+    const handleReset = (form) => {
+      ctx.$refs[form].resetFields()
     }
-    // 列表编辑方法
-    const handleEdit = () => {
 
+    // 列表编辑方法
+    const handleEdit = (row) => {
+      action.value = 'edit'
+      showModal.value = true
+      ctx.$nextTick(() => {
+        Object.assign(userForm, row)
+      })
     }
+
     // 列表删除方法
     const handleDel = async (row) => {
       const res = await $api.getUserDel({
@@ -201,8 +309,37 @@ export default defineComponent({
 
     const handleChange = (current) => {
       pager.pageNum = current
+      getUserList()
     }
 
+    const handleCreate = () => {
+      action.value = 'create'
+      showModal.value = true
+    }
+
+    // 用户弹框关闭
+    const handleCancel = () => {
+      showModal.value = false
+      handleReset('dialogForm')
+    }
+
+    // 用户新增提交
+    const handleSubmit = () => {
+      ctx.$refs.dialogForm.validate(async (valid) => {
+        if (!valid) return
+        let params = toRaw(userForm)
+        params.userEmail += '@admin.com'
+        params.action = action.value
+
+        const res = await $api.userSubmit(params)
+        if (res) {
+          showModal.value = false
+          $message.success(res)
+          handleReset('dialogForm')
+          getUserList()
+        }
+      })
+    }
     return {
       user,
       handleSearch,
@@ -215,7 +352,16 @@ export default defineComponent({
       getUserList,
       pager,
       handleChange,
-      handleSelect
+      handleSelect,
+      handleCreate,
+      showModal,
+      userForm,
+      rules,
+      roleList,
+      deptList,
+      handleCancel,
+      handleSubmit,
+      action
     }
   }
 })
