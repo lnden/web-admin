@@ -67,5 +67,13 @@
       data: params,
       mock: true,
     })
-  }
+  },
+  menuSubmit(params) {
+    return request({
+      url: '/menu/operate',
+      method: 'post',
+      data: params,
+      mock: true,
+    })
+  },
  }
