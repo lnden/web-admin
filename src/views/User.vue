@@ -38,7 +38,8 @@
           :key="item.prop"
           :prop="item.prop"
           :label="item.label"
-          :formatter="item.formatter">
+          :formatter="item.formatter"
+          :width="item.width">
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
@@ -110,6 +111,8 @@
 
 <script>
 import { getCurrentInstance, defineComponent, onMounted, reactive, ref, toRaw } from 'vue'
+import utils from '@/utils/util'
+
 export default defineComponent({
   name: 'user',
   setup() {
@@ -178,7 +181,8 @@ export default defineComponent({
       },
       {
         label: '用户邮箱',
-        prop: 'userEmail'
+        prop: 'userEmail',
+        width: '140'
       },
       {
         label: '用户角色',
@@ -203,11 +207,19 @@ export default defineComponent({
       },
       {
         label: '注册时间',
-        prop: 'createTime'
+        prop: 'createTime',
+        width: '180',
+        formatter: (row, column, value) => {
+          return utils.formateDate(new Date(value))
+        }
       },
       {
         label: '最后登录时间',
-        prop: 'lastLoginTime'
+        prop: 'lastLoginTime',
+         width: '180',
+        formatter: (row, column, value) => {
+          return utils.formateDate(new Date(value))
+        }
       }
     ])
 
