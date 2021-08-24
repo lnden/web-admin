@@ -15,6 +15,7 @@
             type="password"
             prefix-icon="el-icon-view"
             v-model="user.userPwd"
+            @keyup.enter="handleLogin"
           />
         </el-form-item>
         <el-form-item>

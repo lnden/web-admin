@@ -50,7 +50,7 @@
   */
  function request(options) {
    options.method = options.method || 'get'
-   if (options.method.toLowerCase === 'get') {
+   if (options.method.toLowerCase() === 'get') {
      options.params = options.data
    }
   let isMock = config.mock;
