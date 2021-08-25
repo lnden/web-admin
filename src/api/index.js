@@ -46,7 +46,7 @@
   },
   getRoleAllList() {
     return request({
-      url: '/roles/alList',
+      url: '/roles/allList',
       method: 'get',
       data: {},
       mock: true,
@@ -76,17 +76,17 @@
       mock: false,
     })
   },
-  getRoleList() {
+  getRoleList(params) {
     return request({
-      url: '/role/list',
+      url: '/roles/list',
       method: 'get',
-      data: {},
+      data: params,
       mock: true,
     })
   },
   roleOperate(params) {
     return request({
-      url: '/role/operate',
+      url: '/roles/operate',
       method: 'post',
       data: params,
       mock: true,

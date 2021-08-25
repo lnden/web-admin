@@ -21,6 +21,7 @@
           :key="item.prop"
           :prop="item.prop"
           :label="item.label"
+          :width="item.width"
           :formatter="item.formatter">
         </el-table-column>
         <el-table-column label="操作" width="260">
@@ -34,6 +35,7 @@
       <el-pagination 
         class="pagination"
         background
+        @current-change="handleChange"
         layout="prev, pager, next"
         :total="pager.total"/>
     </div>
@@ -106,14 +108,23 @@ export default {
         {
           label: "权限列表",
           prop: "permissionList",
+          width: 200,
           formatter: (row, column, value) => {
              let names = []
             let list = value.halfCheckedKeys || []
             list.map(key => {
-              if (this.actionMap[key]) names.push(this.actionMap[key])
+              let name = this.actionMap[key]
+              if (key && name) names.push(name)
             })
             return names.join(',')
           }
+        },
+        {
+          label: "更新时间",
+          prop: "updateTime",
+          formatter(row, column, value) {
+            return utils.formateDate(new Date(value));
+          },
         },
         {
           label: "创建时间",
@@ -126,6 +137,7 @@ export default {
       roleList: [],
       pager: {
         total: 0,
+        pageNum: 1,
         pageSize: 10
       },
       showModal: false,
@@ -151,10 +163,14 @@ export default {
     this.getMenuList()
   },
   methods: {
+    handleChange(current) {
+      this.pager.pageNum = current
+      this.getRoleList()
+    },
     // 角色列表初始化
     async getRoleList() {
       try {
-        let { page, list } = await this.$api.getRoleList(this.queryForm)
+        let { page, list } = await this.$api.getRoleList({ ...this.queryForm, ...this.pager })
         this.roleList = list
         this.pager.total = page.total
       } catch (e) {
@@ -231,11 +247,11 @@ export default {
       this.action = "create";
       this.showModal = true
     },
-    handleEdit(row) {
+    handleEdit({ _id, roleName, remark }) {
       this.action = "edit";
       this.showModal = true;
       this.$nextTick(() => {
-        Object.assign(this.roleForm, row);
+        Object.assign(this.roleForm, { _id, roleName, remark});
       });
     },
     async handleDel(_id) {
