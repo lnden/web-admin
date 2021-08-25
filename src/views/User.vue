@@ -232,7 +232,7 @@ export default defineComponent({
     // 初始化接口调用
     onMounted(() => {
       getUserList()
-      getRoleList()
+      getRoleAllList()
       getDeptList()
     })
     
@@ -246,8 +246,8 @@ export default defineComponent({
     const action = ref('create')
 
     // 获取角色列表
-    const getRoleList = async () => {
-      const list = await $api.getRoleList()
+    const getRoleAllList = async () => {
+      const list = await $api.getRoleAllList()
       roleList.value = list
     }
 
