@@ -115,7 +115,7 @@
 import utils from "../utils/util";
 
 export default {
-  name: "menu",
+  name: "menus",
   data() {
     return {
       queryForm: {
