@@ -110,7 +110,7 @@ const router = createRouter({
 async function loadAsyncRoutes() {
   let userInfo = storage.getItem('userInfo') || {}
   if (userInfo.token) {
-    const menuList =  await API.getPermissionList()
+    const { menuList } =  await API.getPermissionList()
     let routes = util.generateRoute(menuList)
     routes.map(route => {
       let url = `./../views/${route.component}.vue`
