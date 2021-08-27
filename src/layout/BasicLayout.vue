@@ -77,7 +77,7 @@ export default {
     handleCommand(val) {
       if (val === 'email') return
       this.$store.commit('saveUserInfo', '')
-      this.userInfo = null
+      this.userInfo = {}
       this.$router.push('/login')
     },
     handleToggle() {
@@ -93,7 +93,7 @@ export default {
     },
     async getMenuList() {
       try {
-        const list = await this.$api.getMenuList()
+        const list = await this.$api.getPermissionList()
         this.userMenu = list 
       } catch (error) {
         console.error(error)

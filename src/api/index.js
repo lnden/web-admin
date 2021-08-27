@@ -115,5 +115,13 @@
       data: params,
       mock: true,
     })
+  },
+  getPermissionList() {
+    return request({
+      url: '/users/getPermissionList',
+      method: 'get',
+      data: {},
+      mock: false,
+    })
   }
  }
