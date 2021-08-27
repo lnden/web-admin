@@ -29,6 +29,9 @@
 </template>
 
 <script>
+import storage from '@/utils/storage'
+import util from '@/utils/util'
+
 export default {
   name: 'login',
   data() {
@@ -59,13 +62,26 @@ export default {
     handleLogin() {
       this.$refs.userForm.validate((valid) => {
         if (!valid)  return false;
-        this.$api.login(this.user).then((res) => {
+        this.$api.login(this.user).then(async (res) => {
           this.$store.commit('saveUserInfo', res);
+          await this.loadAsyncRoutes()
           this.$router.push('/welcome');
         });
       });
-    }
-  },
+    },
+    async loadAsyncRoutes() {
+      let userInfo = storage.getItem('userInfo') || {}
+      if (userInfo.token) {
+        const menuList =  await this.$api.getPermissionList()
+        let routes = util.generateRoute(menuList)
+        routes.map(route => {
+          let url = `./../views/${route.component}.vue`
+          route.component = () => import(url)
+          this.$router.addRoute('system', route)
+        })
+      }
+    },
+  }
 };
 </script>
 
