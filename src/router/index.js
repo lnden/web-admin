@@ -93,6 +93,8 @@ const router = createRouter({
   routes
 })
 
+await loadAsyncRoutes()
+
 /**
  * @description 判断当前地址是否可以访问
  * @param {*} path  => router.hasRoute(to.name)
@@ -119,8 +121,6 @@ async function loadAsyncRoutes() {
     })
   }
 }
-
-await loadAsyncRoutes()
 
 // 导航守卫
 router.beforeEach((to, form, next) => {

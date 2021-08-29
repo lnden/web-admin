@@ -25,7 +25,7 @@
       url: '/menu/list',
       method: 'get',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   getUserList(params) {
@@ -33,7 +33,7 @@
       url: '/users/list',
       method: 'get',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   getAllUserList() {
@@ -41,7 +41,7 @@
       url: '/users/allList',
       method: 'get',
       data: {},
-      mock: true,
+      mock: false,
     })
   },
   getUserDel(params) {
@@ -49,7 +49,7 @@
       url: '/users/delete',
       method: 'post',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   getRoleAllList() {
@@ -57,7 +57,7 @@
       url: '/roles/allList',
       method: 'get',
       data: {},
-      mock: true,
+      mock: false,
     })
   },
   getDeptList() {
@@ -65,7 +65,7 @@
       url: '/dept/list',
       method: 'get',
       data: {},
-      mock: true,
+      mock: false,
     })
   },
   deptOperate(params) {
@@ -73,7 +73,7 @@
       url: '/dept/operate',
       method: 'post',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   userSubmit(params) {
@@ -81,7 +81,7 @@
       url: '/users/operate',
       method: 'post',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   menuSubmit(params) {
@@ -97,7 +97,7 @@
       url: '/roles/list',
       method: 'get',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   roleOperate(params) {
@@ -105,7 +105,7 @@
       url: '/roles/operate',
       method: 'post',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   updatePermission(params) {
@@ -113,7 +113,7 @@
       url: '/roles/update/permission',
       method: 'post',
       data: params,
-      mock: true,
+      mock: false,
     })
   },
   getPermissionList() {
@@ -122,6 +122,22 @@
       method: 'get',
       data: {},
       mock: false,
+    })
+  },
+  getApplyList(params) {
+    return request({
+      url: '/leave/list',
+      method: 'get',
+      data: params,
+      mock: false
+    })
+  },
+  leaveOperate(params) {
+    return request({
+      url: '/leave/operate',
+      method: 'post',
+      data: params,
+      mock: false
     })
   }
  }
