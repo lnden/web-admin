@@ -4,7 +4,7 @@
       <el-form ref="form" inline :model="queryForm">
         <el-form-item label="审批状态" prop="applyState">
           <el-select v-model="queryForm.applyState">
-            <el-option :value="0" label="所有"></el-option>
+            <el-option value="" label="所有"></el-option>
             <el-option :value="1" label="待审批"></el-option>
             <el-option :value="2" label="审批中"></el-option>
             <el-option :value="3" label="审批拒绝"></el-option>
@@ -34,8 +34,8 @@
         </el-table-column>
         <el-table-column label="操作" width="150">
           <template #default="scope">
-              <el-button @click="handleView(scope.row)" type="primary" size="mini">查看</el-button>
-              <el-button v-if="[1, 2].includes(scope.row.applyState)" @click="handleDel(scope.row)" type="danger" size="mini">作废</el-button>
+            <el-button @click="handleView(scope.row)" type="primary" size="mini">查看</el-button>
+            <el-button v-if="[1, 2].includes(scope.row.applyState)" @click="handleDel(scope.row)" type="danger" size="mini">作废</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -75,21 +75,21 @@
                 <el-date-picker 
                   v-model="leaveForm.endTime"
                   type="date"
-                   @change="(val) => handleDateChaneg('endTime', val)"
+                  @change="(val) => handleDateChaneg('endTime', val)"
                   placeholder="请选择结束日期"/>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form-item>
         <el-form-item label="休假时长">
-           <span>{{leaveForm.leaveTime}}</span>
+          <span>{{leaveForm.leaveTime}}</span>
         </el-form-item>
         <el-form-item label="休假原因" prop="reasons" required>
           <el-input 
           type="textarea" 
           :row="3"
           v-model="leaveForm.reasons"
-           placeholder="请输入休假原因"/>
+          placeholder="请输入休假原因"/>
         </el-form-item>
       </el-form>
       <template #footer>

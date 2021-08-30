@@ -17,7 +17,7 @@
        url: '/leave/count',
        method: 'get',
        data: {},
-       mock: true,
+       mock: false,
      })
    },
    getMenuList(params) {
@@ -135,6 +135,14 @@
   leaveOperate(params) {
     return request({
       url: '/leave/operate',
+      method: 'post',
+      data: params,
+      mock: false
+    })
+  },
+  leaveApprove(params) {
+    return request({
+      url: '/leave/approve',
       method: 'post',
       data: params,
       mock: false

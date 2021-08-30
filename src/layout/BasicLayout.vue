@@ -26,7 +26,7 @@
           </div>
         </div>
         <div class="user-info">
-          <el-badge :is-dot="noticeCount > 0" class="notice" type="danger">
+          <el-badge :is-dot="noticeCount > 0" :class="{'notice': true, 'actived':  noticeCount> 0}" type="danger" @click="handleClick">
             <i class=el-icon-bell></i>
           </el-badge>
           <el-dropdown @command="handleCommand">
@@ -60,11 +60,15 @@ export default {
     TreeMenu,
     BreadCrumb
   },
+  computed: {
+    noticeCount() {
+      return this.$store.state.noticeCount
+    }
+  },
   data() {
     return {
       userInfo: this.$store.state.userInfo,
       isCollapse: false,
-      noticeCount: 0,
       userMenu: [],
       defaultMenu: location.hash.slice(1)
     }
@@ -74,6 +78,11 @@ export default {
     this.getMenuList()
   },
   methods: {
+    handleClick() {
+      if (noticeCount) {
+        this.$router.push('/audit/approve')
+      }
+    },
     handleCommand(val) {
       if (val === 'email') return
       this.$store.commit('saveUserInfo', '')
@@ -86,7 +95,7 @@ export default {
     async getNoticeCount() {
       try {
         const count = await this.$api.noticeCount()
-        this.noticeCount = count
+        this.$store.commit('saveNoticeCount', count)
       } catch (error) {
         console.error(error)
       }
@@ -164,6 +173,9 @@ export default {
         .notice {
           line-height: 30px;
           margin-right: 15px;
+        }
+        .actived {
+           cursor: pointer;
         }
         .user-link {
           cursor: pointer;

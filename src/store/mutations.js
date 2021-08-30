@@ -2,7 +2,7 @@
  * @description Mutations业务层数据
  * @author lnden
  */
- import storage from './../utils/storage'
+import storage from '@/utils/storage'
 
  export default {
     saveUserInfo(state, userInfo){
@@ -16,5 +16,9 @@
     saveUserAction(state, actionList){
       state.actionList = actionList
       storage.setItem('actionList', actionList)
+    },
+    saveNoticeCount(state, noticeCount) {
+      state.noticeCount = noticeCount
+      storage.setItem('noticeCount', noticeCount)
     }
  }
