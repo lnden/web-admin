@@ -8,6 +8,7 @@ import store from './store'
 import request from './utils/request'
 import storage from './utils/storage'
 import api from './api'
+import QueryForm from './../packages/QueryForm/index'
 
 const app = createApp(App)
 
@@ -33,6 +34,7 @@ app.config.globalProperties.$request = request
 app.config.globalProperties.$storeage = storage
 
 app.use(router)
-app.use(store)
-app.use(ElementPlus, { size: 'small', zIndex: 3000 })
-app.mount('#app')
+  .use(store)
+  .use(ElementPlus, { size: 'small', zIndex: 3000 })
+  .use(QueryForm)
+  .mount('#app')

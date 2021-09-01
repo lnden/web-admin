@@ -1,26 +1,7 @@
 <template>
   <div class="user-wrapper">
     <div class="query-form">
-      <el-form ref="form" inline :model="user">
-        <el-form-item label="用户ID" prop="userId">
-          <el-input v-model="user.userId" placeholder="请输入用户ID" />
-        </el-form-item>
-        <el-form-item  label="用户名称" prop="userName">
-          <el-input v-model="user.userName" placeholder="请输入用户名称" />
-        </el-form-item>
-        <el-form-item  label="用户状态" prop="state">
-          <el-select v-model="user.state"  placeholder="请选择状态">
-            <el-option :value="0" label="所有"></el-option>
-            <el-option :value="1" label="在职"></el-option>
-            <el-option :value="2" label="离职"></el-option>
-            <el-option :value="3" label="试用期"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="handleSearch">查询</el-button>
-          <el-button @click="handleReset('form')">重置</el-button>
-        </el-form-item>
-      </el-form>
+       <query-form v-model="user" :form="form" @handleQuery="handleQuery"/>
     </div>
     <div class="base-table">
       <div class="action">
@@ -120,7 +101,7 @@ export default defineComponent({
     const { $api, $message } = getCurrentInstance().appContext.config.globalProperties
     const { ctx } = getCurrentInstance()
     // 初始化用户表单对象
-    const user = reactive({
+    const user = ref({
       userId: '',
       userName: '',
       state: 0
@@ -252,7 +233,7 @@ export default defineComponent({
     }
 
     // 获取用户列表
-    const getUserList = async () => {
+    const getUserList = async (user) => {
       let params = {...user, ...pager}
       try {
         const {page, list} = await $api.getUserList(params)
@@ -263,10 +244,6 @@ export default defineComponent({
       }
     }
     
-    // 查询方法
-    const handleSearch = () => {
-      getUserList()
-    }
     // 重置方法
     const handleReset = (form) => {
       ctx.$refs[form].resetFields()
@@ -352,9 +329,41 @@ export default defineComponent({
         }
       })
     }
+
+    const handleQuery = (values) => {
+      // console.log(values, user.value)
+      getUserList(values)
+    }
+
+    const form =[
+      {
+        type: 'input',
+        model: 'userId',
+        label: '用户ID',
+        placeholder: '请输入用户ID'
+      },
+      {
+        type: 'input',
+        model: 'userName',
+        label: '用户名称',
+        placeholder: '请输入用户名称'
+      },
+      {
+        type: 'select',
+        model: 'state',
+        label: '用户状态',
+        placeholder: '请选择状态',
+        options: [
+          { label: '所有', value: 0, disabled: true},
+          { label: '在职', value: 1 },
+          { label: '离职', value: 2 },
+          { label: '试用期', value: 3 },
+        ]
+      } 
+    ]
+
     return {
       user,
-      handleSearch,
       handleReset,
       userList,
       columns,
@@ -373,7 +382,9 @@ export default defineComponent({
       deptList,
       handleCancel,
       handleSubmit,
-      action
+      action,
+      handleQuery,
+      form
     }
   }
 })
