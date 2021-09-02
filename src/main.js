@@ -8,7 +8,7 @@ import store from './store'
 import request from './utils/request'
 import storage from './utils/storage'
 import api from './api'
-import QueryForm from './../packages/QueryForm/index'
+import Rocket from './../packages'
 
 const app = createApp(App)
 
@@ -36,5 +36,5 @@ app.config.globalProperties.$storeage = storage
 app.use(router)
   .use(store)
   .use(ElementPlus, { size: 'small', zIndex: 3000 })
-  .use(QueryForm)
+  .use(Rocket)
   .mount('#app')

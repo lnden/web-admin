@@ -3,40 +3,18 @@
     <div class="query-form">
        <query-form v-model="user" :form="form" @handleQuery="handleQuery"/>
     </div>
-    <div class="base-table">
-      <div class="action">
+    <base-table 
+      :columns="columns"
+      :data="userList"
+      :pager="pager"
+      @selection-change="handleSelect"
+      @handleOperate="handleOperate"
+      @handleCurrentChange="handleCurrentChange">
+      <template #action>
         <el-button type="primary" @click="handleCreate" v-has="'user-add'">新增</el-button>
-        <el-button type="danger" @click="handlePatchDel">批量删除</el-button>
-      </div>
-      <el-table
-        :data="userList"
-        @selection-change="handleSelect">
-        <el-table-column
-          type="selection" width="55">
-        </el-table-column>
-        <el-table-column
-          v-for="item in columns"
-          :key="item.prop"
-          :prop="item.prop"
-          :label="item.label"
-          :formatter="item.formatter"
-          :width="item.width">
-        </el-table-column>
-        <el-table-column label="操作" width="150">
-          <template #default="scope">
-              <el-button @click="handleEdit(scope.row)" type="primary" size="mini" v-has="'user-edit'">编辑</el-button>
-              <el-button @click="handleDel(scope.row)" type="danger" size="mini" v-has="'user-del'">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        class="pagination"
-        background
-        layout="prev, pager, next"
-        @current-change="handleChange"
-        :page-size="pager.pageSize"
-        :total="pager.total" />
-    </div>
+        <el-button type="danger" @click="handlePatchDel">批量删除</el-button>  
+      </template>
+    </base-table>  
     <el-dialog title="用户新增" v-model="showModal">
       <el-form ref="dialogForm" :model="userForm"  label-width="100px" :rules="rules">
         <el-form-item label="用户名" prop="userName">
@@ -153,6 +131,9 @@ export default defineComponent({
     // 定义动态表格-表头格式
     const columns = reactive([
       {
+        type: 'selection'
+      },
+      {
         label: '用户ID',
         prop: 'userId'
       },
@@ -197,10 +178,29 @@ export default defineComponent({
       {
         label: '最后登录时间',
         prop: 'lastLoginTime',
-         width: '180',
+        width: '180',
         formatter: (row, column, value) => {
           return utils.formateDate(new Date(value))
         }
+      },
+      {
+        type: 'operate',
+        width: 150,
+        label: '操作',
+        list: [
+          {
+            type: 'primary',
+            text: '编辑',
+            size: 'mini',
+            visible: true,
+          },
+          {
+            type: 'danger',
+            text: '删除',
+            size: 'mini',
+            visible: true,
+          }
+        ]
       }
     ])
 
@@ -296,7 +296,7 @@ export default defineComponent({
       checkeduserIds.value = arr
     }
 
-    const handleChange = (current) => {
+    const handleCurrentChange = (current) => {
       pager.pageNum = current
       getUserList()
     }
@@ -362,6 +362,14 @@ export default defineComponent({
       } 
     ]
 
+    const handleOperate = ({ index, row }) => {
+      if (index == 0) {
+        handleEdit(row)
+      } else {
+        handleDel(row)
+      }
+    }
+
     return {
       user,
       handleReset,
@@ -372,7 +380,6 @@ export default defineComponent({
       handlePatchDel,
       getUserList,
       pager,
-      handleChange,
       handleSelect,
       handleCreate,
       showModal,
@@ -384,7 +391,9 @@ export default defineComponent({
       handleSubmit,
       action,
       handleQuery,
-      form
+      form,
+      handleOperate,
+      handleCurrentChange
     }
   }
 })
