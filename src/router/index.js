@@ -122,14 +122,4 @@ async function loadAsyncRoutes() {
   }
 }
 
-// 导航守卫
-router.beforeEach((to, form, next) => {
-  if (router.hasRoute(to.name)) {
-    document.title = to.meta.title
-    next()
-  } else {
-    next('/404')
-  }
-})
-
 export default router

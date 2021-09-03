@@ -19,7 +19,7 @@
     </div>
     <div class="base-table">
       <div class="action">
-        <el-button type="primary" @click="handleCreate(1)">新增</el-button>
+        <el-button type="primary" @click="handleCreate(1)" v-has="'menu-add'">新增</el-button>
       </div>
       <el-table
         :data="menuList"
@@ -35,9 +35,9 @@
         </el-table-column>
         <el-table-column label="操作" width="220">
           <template #default="scope">
-            <el-button @click="handleCreate(2, scope.row)" type="primary" size="mini">新增</el-button>
-            <el-button @click="handleEdit(scope.row)" size="mini">编辑</el-button>
-            <el-button type="danger" @click="handleDel(scope.row._id)" size="mini">删除</el-button>
+            <el-button v-has="'menu-line-add'" @click="handleCreate(2, scope.row)" type="primary" size="mini">新增</el-button>
+            <el-button v-has="'menu-edit'" @click="handleEdit(scope.row)" size="mini">编辑</el-button>
+            <el-button v-has="'menu-delete'" type="danger" @click="handleDel(scope.row._id)" size="mini">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -132,12 +132,12 @@ export default {
         {
           label: "图标",
           prop: "icon",
-          width: 150
+          width: 120
         },
         {
           label: "菜单类型",
           prop: "menuType",
-          width: 80,
+          width: 70,
           formatter(row, column, value) {
             return {
               1: "菜单",
@@ -148,7 +148,6 @@ export default {
         {
           label: "权限标识",
           prop: "menuCode",
-          width: 80,
         },
         {
           label: "路由地址",
@@ -161,7 +160,7 @@ export default {
         {
           label: "菜单状态",
           prop: "menuState",
-          width: 80,
+          width: 70,
           formatter(row, column, value) {
             return {
               1: "正常",
