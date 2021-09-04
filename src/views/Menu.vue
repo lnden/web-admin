@@ -241,7 +241,7 @@ export default {
       });
     },
     async handleDel(_id) {
-      await this.$api.menuSubmit({ _id, action: "delete" });
+      await this.$api.getMenuOperate({ _id, action: "delete" });
       this.$message.success("删除成功");
       this.getMenuList();
     },
@@ -251,7 +251,7 @@ export default {
         if (!valid) return 
         let { action, menuForm } = this;
         let params = { ...menuForm, action };
-        let res = await this.$api.menuSubmit(params);
+        let res = await this.$api.getMenuOperate(params);
         this.showModal = false;
         this.$message.success("操作成功");
         this.handleReset("dialogForm");

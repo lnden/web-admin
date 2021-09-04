@@ -149,7 +149,7 @@ export default {
     },
     async handleDel({_id}) {
       this.action = 'delete'
-      await this.$api.deptOperate({ _id, action: this.action })
+      await this.$api.getDeptOperate({ _id, action: this.action })
       this.$message.success('删除成功')
       this.getDeptList()
     },
@@ -189,7 +189,7 @@ export default {
         if (!valid) return
         let params = {...this.deptForm, action: this.action}
         delete params.user
-        let res = await this.$api.deptOperate(params)
+        let res = await this.$api.getDeptOperate(params)
         if (res) {
           this.$message.success('操作成功')
           this.handleClose()

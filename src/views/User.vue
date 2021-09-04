@@ -320,7 +320,7 @@ export default defineComponent({
         params.userEmail += '@admin.com'
         params.action = action.value
 
-        const res = await $api.userSubmit(params)
+        const res = await $api.getUserSubmit(params)
         if (res) {
           showModal.value = false
           $message.success(res)

@@ -219,11 +219,9 @@ export default {
     },
     async handlePermissionSubmit() {
       let nodes = this.$refs.tree.getCheckedNodes()
-      console.log(nodes)
       let halfKeys = this.$refs.tree.getHalfCheckedKeys()
       let checkedKeys = []
       let parentKeys = []
-      console.log(halfKeys)
       nodes.map(node => {
         if (!node.children) {
           checkedKeys.push(node._id)
@@ -255,7 +253,7 @@ export default {
       });
     },
     async handleDel(_id) {
-      await this.$api.roleOperate({ _id, action: "delete" });
+      await this.$api.getRoleOperate({ _id, action: "delete" });
       this.$message.success("删除成功");
       this.getRoleList();
     },
@@ -264,7 +262,7 @@ export default {
         if (!valid) return 
         let { action, roleForm } = this;
         let params = { ...roleForm, action };
-        let res = await this.$api.roleOperate(params);
+        let res = await this.$api.getRoleOperate(params);
         this.showModal = false;
         this.$message.success("操作成功");
         this.handleReset("dialogForm");

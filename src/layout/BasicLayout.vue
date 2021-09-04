@@ -94,7 +94,7 @@ export default {
     },
     async getNoticeCount() {
       try {
-        const count = await this.$api.noticeCount()
+        const count = await this.$api.getNoticeCount()
         this.$store.commit('saveNoticeCount', count)
       } catch (error) {
         console.error(error)

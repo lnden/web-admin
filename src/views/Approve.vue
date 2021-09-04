@@ -226,7 +226,7 @@ export default defineComponent({
 
     const handleCurrentChange = (current) => {
       pager.pageNum = current
-      getUserList()
+      getApplyList()
     }
 
     const handleView = (row) => {
@@ -262,7 +262,7 @@ export default defineComponent({
         if(!valid) return
         let params = { _id: detail.value._id, action, remark: auditForm.remark }
         try {
-          await $api.leaveApprove(params)
+          await $api.getLeaveApprove(params)
           handleClose()
           $message.success('处理成功')
           getApplyList()

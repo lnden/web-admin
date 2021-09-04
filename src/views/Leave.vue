@@ -296,7 +296,7 @@ export default defineComponent({
         if(!valid) return
         try {
           let params = { ...leaveForm, action: action.value }
-          await $api.leaveOperate(params)
+          await $api.getLeaveOperate(params)
           $message.success('操作成功')
           handleClose()
           getApplyList()
@@ -308,7 +308,7 @@ export default defineComponent({
 
     const handleCurrentChange = (current) => {
       pager.pageNum = current
-      getUserList()
+      getApplyList()
     }
 
     const handleView = (row) => {
@@ -338,7 +338,7 @@ export default defineComponent({
       action.value = 'delete'
       try {
         let params = { _id, action: action.value }
-        const { list, page } = $api.leaveOperate(params)
+        const { list, page } = $api.getLeaveOperate(params)
         applyList.value = list 
         pager.total = page.total
         $message.success('操作成功')
