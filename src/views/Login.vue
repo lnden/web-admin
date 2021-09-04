@@ -29,8 +29,6 @@
 </template>
 
 <script>
-import storage from '@/utils/storage'
-import util from '@/utils/util'
 
 export default {
   name: 'login',
