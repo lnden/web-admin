@@ -24,6 +24,7 @@
           >
         </el-form-item>
       </el-form>
+      <p class="desc">用户初始化密码为123456 (admin除外)</p>
     </div>
   </div>
 </template>
@@ -35,8 +36,8 @@ export default {
   data() {
     return {
       user: {
-        userName: '',
-        userPwd: '',
+        userName: 'admin',
+        userPwd: 'admin',
       },
       rules: {
         userName: [
@@ -85,6 +86,10 @@ export default {
     background-color: #fff;
     border-radius: 4px;
     box-shadow: 0px 0px 10px 3px #c7c9cb4d;
+    .desc {
+      font-size: 14px;
+      color: #666;
+    }
     .title {
       font-size: 30px;
       line-height: 1.5;

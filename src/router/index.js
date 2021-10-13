@@ -44,38 +44,64 @@ const routes = [
     },
     component: BasicLayout,
     children: [
-      // {
-      //   name: 'user',
-      //   path: 'user',
-      //   meta: {
-      //     title: '用户管理'
-      //   },
-      //   component: () => import('@/views/User.vue')
-      // },
-      // {
-      //   name: 'menu',
-      //   path: 'menu',
-      //   meta: {
-      //       title: '菜单管理'
-      //   },
-      //   component: () => import('@/views/Menu.vue')
-      // },
-      // {
-      //   name: 'role',
-      //   path: 'role',
-      //   meta: {
-      //     title: '角色管理'
-      //   },
-      //   component: () => import('@/views/Role.vue')
-      // },
-      // {
-      //   name: 'dept',
-      //   path: 'dept',
-      //   meta: {
-      //       title: '部门管理'
-      //   },
-      //   component: () => import('@/views/Dept.vue')
-      // }
+      {
+        name: 'user',
+        path: 'user',
+        meta: {
+          title: '用户管理'
+        },
+        component: () => import('@/views/User.vue')
+      },
+      {
+        name: 'menu',
+        path: 'menu',
+        meta: {
+            title: '菜单管理'
+        },
+        component: () => import('@/views/Menu.vue')
+      },
+      {
+        name: 'role',
+        path: 'role',
+        meta: {
+          title: '角色管理'
+        },
+        component: () => import('@/views/Role.vue')
+      },
+      {
+        name: 'dept',
+        path: 'dept',
+        meta: {
+            title: '部门管理'
+        },
+        component: () => import('@/views/Dept.vue')
+      }
+    ]
+  },
+  {
+    name: 'audit',
+    path: '/audit',
+    meta: {
+      title: '审批管理'
+    },
+    component: BasicLayout,
+    children: [
+      {
+        name: 'leave',
+        path: 'leave',
+        meta: {
+          title: '休假审批'
+        },
+        component: () => import('@/views/Leave.vue')
+      },
+      {
+        name: 'approve',
+        path: 'approve',
+        meta: {
+            title: '待审批'
+        },
+        component: () => import('@/views/Approve.vue')
+      }
     ]
   },
   {
@@ -97,7 +123,7 @@ const router = createRouter({
 async function init() {
   await loadAsyncRoutes()
 }
-init();
+// init();
 
 /**
  * @description 判断当前地址是否可以访问
