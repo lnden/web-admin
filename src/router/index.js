@@ -93,7 +93,11 @@ const router = createRouter({
   routes
 })
 
-await loadAsyncRoutes()
+// hank vite build error, add a layer of function wrapping
+async function init() {
+  await loadAsyncRoutes()
+}
+init();
 
 /**
  * @description 判断当前地址是否可以访问
