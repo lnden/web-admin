@@ -7,11 +7,11 @@
  const EnvConf = {
    dev: {
      baseURL: '/api',
-     mockURL: ' http://129.28.140.33:7200/mock/611e25f5533ee55fb589008d/api'
+     mockURL: 'http://mock.pactera.xyz/mock/616646c2815a76477d287040/admin'
    },
    test: {
      baseURL: '/api',
-     mockURL: ' http://129.28.140.33:7200/mock/611e25f5533ee55fb589008d/api'
+     mockURL: 'http://mock.pactera.xyz/mock/616646c2815a76477d287040/admin'
    },
    prod: {
      baseURL: '/',
